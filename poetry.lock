@@ -698,23 +698,6 @@ files = [
 ]
 
 [[package]]
-name = "tinynetrc"
-version = "1.3.1"
-description = "Read and write .netrc files."
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "tinynetrc-1.3.1-py2.py3-none-any.whl", hash = "sha256:46c7820e5f49c9434d2c4cd74de8a06edbbd45e63a8a2980a90b8a43db8facf7"},
-    {file = "tinynetrc-1.3.1.tar.gz", hash = "sha256:2b9a256d2e630643b8f0985f5e826ccf0bf3716e07e596a4f67feab363d254df"},
-]
-
-[package.extras]
-dev = ["flake8 (==3.9.2)", "konch", "pytest", "tox"]
-lint = ["flake8 (==3.9.2)"]
-tests = ["pytest"]
-
-[[package]]
 name = "tomli"
 version = "2.0.1"
 description = "A lil' TOML parser"
@@ -931,4 +914,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "9216d8e88be86001eefe17cc0d65c71245aed01a1dfb66989fec7675f6764b93"
+content-hash = "17ab9a9511201c2fc14fd106f7c64be83d2b02474dc7ebf93ef8a13b1ef0ce2b"
