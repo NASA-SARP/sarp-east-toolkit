@@ -8,8 +8,8 @@ packages = [{include = "sarp_east_toolkit"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-requests = "^2.31.0"
-s3fs = "^2023.5.0"
+requests = "^2.28.1"
+s3fs = "^2022.5.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
