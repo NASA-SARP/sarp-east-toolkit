@@ -5,7 +5,7 @@ A tiny, poorly documented package to speed student setup.
 ## Installation
 
 ```
-pip install git+https://github.com/NASA-SARP/sarp-east-toolkit.git
+pip install --user git+https://github.com/NASA-SARP/sarp-east-toolkit.git
 ```
 
 ## Usage
