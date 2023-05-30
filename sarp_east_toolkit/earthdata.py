@@ -1,6 +1,7 @@
 from netrc import netrc
 from pathlib import Path
 from platform import system
+from typing import Union
 import getpass
 import os
 
@@ -8,7 +9,7 @@ import requests
 import s3fs
 
 
-def earthdata_login(directory: Path|str|None = None) -> None:
+def earthdata_login(directory: Union[Path, str, None] = None) -> None:
 
     # Use home directory by default
     if not directory:
