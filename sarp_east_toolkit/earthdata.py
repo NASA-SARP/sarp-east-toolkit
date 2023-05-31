@@ -64,6 +64,11 @@ def earthdata_s3fs(daac: str) -> s3fs.S3FileSystem:
 
     # get temporary credentials
     response = requests.get(endpoint[daac])
+    try:
+        response.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        message = f'Unable to aquire AWS credentials from {endpoint[daac]}'
+        raise Exception(message) from e
     credentials = response.json()
 
     # return credentialled file system
