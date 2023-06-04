@@ -5,8 +5,10 @@ from typing import Union
 import getpass
 import os
 
+import rasterio
 import requests
 import s3fs
+import boto3
 
 
 def earthdata_login(directory: Union[Path, str, None] = None) -> None:
@@ -47,11 +49,8 @@ def earthdata_login(directory: Union[Path, str, None] = None) -> None:
         os.chmod(netrc_path, 0o600)
 
 
-def earthdata_s3fs(daac: str) -> s3fs.S3FileSystem:
-
-    # ensure netrc
-    earthdata_login()
-
+def earthdata_credentials(daac: str) -> dict:
+    
     # S3 credential providers
     endpoint = {
         'podaac': 'https://archive.podaac.earthdata.nasa.gov/s3credentials',
@@ -69,7 +68,17 @@ def earthdata_s3fs(daac: str) -> s3fs.S3FileSystem:
     except requests.exceptions.HTTPError as e:
         message = f'Unable to aquire AWS credentials from {endpoint[daac]}'
         raise Exception(message) from e
-    credentials = response.json()
+
+    return response.json()
+
+
+def earthdata_s3fs(daac: str) -> s3fs.S3FileSystem:
+
+    # ensure netrc
+    earthdata_login()
+
+    # temporary crediantials
+    credentials = earthdata_credentials(daac)
 
     # return credentialled file system
     return s3fs.S3FileSystem(
@@ -77,4 +86,29 @@ def earthdata_s3fs(daac: str) -> s3fs.S3FileSystem:
         secret=credentials['secretAccessKey'],
         token=credentials['sessionToken'],
         client_kwargs={'region_name': os.environ['AWS_REGION']},
+    )
+
+
+def earthdata_rio(daac: str) -> s3fs.S3FileSystem:
+
+    # ensure netrc
+    earthdata_login()
+
+    # temporary crediantials
+    credentials = earthdata_credentials(daac)
+
+    # configure s3 session
+    session = boto3.Session(
+        aws_access_key_id=credentials['accessKeyId'], 
+        aws_secret_access_key=credentials['secretAccessKey'],
+        aws_session_token=credentials['sessionToken'],
+        region_name={'region_name': os.environ['AWS_REGION']},
+    )
+    
+    # return a credentialled rasterio environment
+    return rasterio.Env(
+        rasterio.session.AWSSession(session),
+        GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR',
+        GDAL_HTTP_COOKIEFILE=str(Path.home() / 'cookies.txt'),
+        GDAL_HTTP_COOKIEJAR=str(Path.home() / 'cookies.txt'),
     )
