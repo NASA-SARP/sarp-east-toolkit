@@ -109,6 +109,6 @@ def earthdata_rio(daac: str) -> s3fs.S3FileSystem:
     return rasterio.Env(
         rasterio.session.AWSSession(session),
         GDAL_DISABLE_READDIR_ON_OPEN='EMPTY_DIR',
-        GDAL_HTTP_COOKIEFILE=str(Path.home() / 'cookies.txt'),
-        GDAL_HTTP_COOKIEJAR=str(Path.home() / 'cookies.txt'),
+        GDAL_HTTP_COOKIEFILE=str(Path.home() / '.cookies.txt'),
+        GDAL_HTTP_COOKIEJAR=str(Path.home() / '.cookies.txt'),
     )
